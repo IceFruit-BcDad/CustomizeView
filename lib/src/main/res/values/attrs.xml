@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircleProgressBar">
+        <!--圆环半径-->
+        <attr name="ring_radius" format="dimension"/>
+        <!--圆环宽度-->
+        <attr name="ring_width" format="dimension"/>
+        <!--圆环背景颜色-->
+        <attr name="ring_background_color" format="color"/>
+        <!--圆环颜色-->
+        <attr name="ring_color" format="color"/>
+        <!--文本颜色-->
+        <attr name="text_color" format="color"/>
+        <!--文本大小-->
+        <attr name="text_size" format="dimension"/>
+        <!--&lt;!&ndash;文本&ndash;&gt;-->
+        <!--<attr name="text" format="string"/>-->
+        <!--文本是否显示-->
+        <attr name="text_enable" format="boolean"/>
+    </declare-styleable>
+</resources>
