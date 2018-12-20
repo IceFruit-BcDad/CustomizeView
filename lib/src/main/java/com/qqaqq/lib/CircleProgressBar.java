@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * @author houzongqi
@@ -57,6 +58,12 @@ public class CircleProgressBar extends View {
     //文本画笔
     private Paint mTextPaint;
 
+    //是否显示圆环背景
+    private boolean mRingBackgroundEnable = false;
+
+    //圆环进度监听事件
+    private CircleProgressListener mCircleProgressListener;
+
     public CircleProgressBar(Context context) {
         this(context, null);
     }
@@ -87,10 +94,12 @@ public class CircleProgressBar extends View {
     }
 
     private void init(){
-        mRingBackgroundPaint = new Paint();
-        mRingBackgroundPaint.setAntiAlias(true);
-        mRingBackgroundPaint.setStyle(Paint.Style.STROKE);
-        mRingBackgroundPaint.setColor(mRingBackgroundColor);
+        if (mRingBackgroundEnable){
+            mRingBackgroundPaint = new Paint();
+            mRingBackgroundPaint.setAntiAlias(true);
+            mRingBackgroundPaint.setStyle(Paint.Style.STROKE);
+            mRingBackgroundPaint.setColor(mRingBackgroundColor);
+        }
         mRingPaint = new Paint();
         mRingPaint.setAntiAlias(true);
         mRingPaint.setStyle(Paint.Style.STROKE);
@@ -105,11 +114,13 @@ public class CircleProgressBar extends View {
         float x = getWidth() / 2;
         float y = getHeight() / 2;
         float radius = mRingRadius == 0 ? Math.min(x, y) : mRingRadius;
-        float ringWidth = mRingWidth == 0 ? mRingRadius / 5 : mRingWidth;
+        float ringWidth = mRingWidth == 0 ? radius / 5 : mRingWidth;
         radius = radius - ringWidth;
-        mRingBackgroundPaint.setStrokeWidth(ringWidth);
         mRingPaint.setStrokeWidth(ringWidth);
-//        canvas.drawCircle(x, y, radius, mRingBackgroundPaint);
+        if (mRingBackgroundEnable){
+            mRingBackgroundPaint.setStrokeWidth(ringWidth);
+            canvas.drawCircle(x, y, radius, mRingBackgroundPaint);
+        }
         @SuppressLint("DrawAllocation") RectF rectF = new RectF(x - radius,
                 y - radius, x + radius,
                 y + radius);
@@ -127,6 +138,14 @@ public class CircleProgressBar extends View {
         if (progress <= 100){
             this.progress = progress;
             invalidate();
+            if (progress == 100){
+                if (mCircleProgressListener != null){
+                    mCircleProgressListener.onProgressFinished();
+                }
+                if (getVisibility() == VISIBLE){
+                    setVisibility(INVISIBLE);
+                }
+            }
         }
     }
 
@@ -140,12 +159,37 @@ public class CircleProgressBar extends View {
         invalidate();
     }
 
+    /**
+     * 获取当前进度
+     * @return 进度
+     */
     public int getProgress() {
         return progress;
     }
 
+    /**
+     * 更新进度
+     * @param progress 进度
+     */
     public void upDateProgress(int progress){
         mObjectAnimator = ObjectAnimator.ofInt(this, "progress", progress);
         mObjectAnimator.start();
+    }
+
+    /**
+     * 设置圆环背景是否显示 (默认false)
+     * @param enable 是否显示
+     */
+    public void setRingBackgroundEnable(boolean enable){
+        mRingBackgroundEnable = enable;
+        invalidate();
+    }
+
+    /**
+     * 实现监听圆环进度接口回调
+     * @param circleProgressListener 接口回调
+     */
+    public void setCircleProgressListener(CircleProgressListener circleProgressListener) {
+        mCircleProgressListener = circleProgressListener;
     }
 }
