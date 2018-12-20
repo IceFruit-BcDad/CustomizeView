@@ -107,6 +107,7 @@ public class CircleProgressBar extends View {
         mTextPaint = new Paint();
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setColor(mTextColor);
     }
 
     @Override
