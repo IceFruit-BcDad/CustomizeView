@@ -104,10 +104,12 @@ public class CircleProgressBar extends View {
         mRingPaint.setAntiAlias(true);
         mRingPaint.setStyle(Paint.Style.STROKE);
         mRingPaint.setColor(mRingColor);
-        mTextPaint = new Paint();
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.setTextSize(mTextSize);
-        mTextPaint.setColor(mTextColor);
+        if (mTextEnable){
+            mTextPaint = new Paint();
+            mTextPaint.setTextAlign(Paint.Align.CENTER);
+            mTextPaint.setTextSize(mTextSize);
+            mTextPaint.setColor(mTextColor);
+        }
     }
 
     @Override
